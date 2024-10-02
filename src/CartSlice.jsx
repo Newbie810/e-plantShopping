@@ -7,29 +7,29 @@ export const CartSlice = createSlice({
   },
   reducers: {
     addItem: (state, action) => {
-  const { name, image, cost } = action.payload;
-  const existingItem = state.items.find(item => item.name === name);
-  if (existingItem) {
-    existingItem.quantity++;
-  } else {
-    state.items.push({ name, image, cost, quantity: 1 });
-  }
-},
+      const { id, name, image, cost } = action.payload; // Make sure these properties are passed
+      const existingItem = state.items.find(item => item.id === id); // Check by id
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        state.items.push({ id, name, image, cost, quantity: 1 }); // Add id to the new item
+      }
+    },
     removeItem: (state, action) => {
-        state.items = state.items.filter(item => item.name !== action.payload);
+      const { id } = action.payload; // Expect id here
+      state.items = state.items.filter(item => item.id !== id);
     },
     updateQuantity: (state, action) => {
-        const { name, quantity } = action.payload;
-        const itemToUpdate = state.items.find(item => item.name === name);
-        if (itemToUpdate) {
-          if (quantity > 0) {
-            itemToUpdate.quantity = quantity;
-          } else {
-            // If quantity is 0 or less, remove the item
-            state.items = state.items.filter(item => item.name !== name);
-          }
+      const { id, quantity } = action.payload; // Use id for identifying the item
+      const itemToUpdate = state.items.find(item => item.id === id);
+      if (itemToUpdate) {
+        if (quantity > 0) {
+          itemToUpdate.quantity = quantity;
+        } else {
+          state.items = state.items.filter(item => item.id !== id);
         }
       }
+    },
   },
 });
 
